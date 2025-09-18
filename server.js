@@ -1,19 +1,25 @@
 require('dotenv').config();
-const express = require('express');
+console.log('JWT_SECRET:', process.env.JWT_SECRET);
+
+const express = require('express');         
 const connectDB = require('./config/db');
 const productRoutes = require('./routes/productRoutes');
+const authRoutes = require('./routes/authRoutes');
+const chatRoutes = require('./routes/chatRoutes');
 
-const app = express();
-connectDB();
+const app = express();                  
+
 
 app.use(express.json());
 
 app.use('/api/products', productRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/chats', chatRoutes);
 
-app.get('/', (req, res) => {
-    res.send('API is running...');
-});
+app.get('/', (req, res) => res.send('API is running...'));
 
-app.listen(5500, '0.0.0.0', () => {
-    console.log(`Server is runninng on port 5500`);
-});
+
+connectDB();
+
+const PORT = process.env.PORT || 5500;
+app.listen(PORT, '0.0.0.0', () => console.log(`Server running on port ${PORT}`));

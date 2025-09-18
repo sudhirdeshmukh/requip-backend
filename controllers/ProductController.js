@@ -15,7 +15,7 @@ const createProduct = async (req, res) => {
 const getProducts = async (req, res) => {
     try {
         const products = await Product.find();
-        res.join(products);
+        res.json(products);
     }
     catch (e) {
         res.status(500).json({ message: 'Error fetching products', e })
