@@ -7,6 +7,7 @@ const productSchema = new mongoose.Schema({
     price: {type: String, required: true},
     seller: {type: String, required: true},
     sellerId: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
-});
+    saleStatus: { type: String, enum: ['active', 'sold', 'archived'], default: 'active' },
+}, { timestamps: true });
 
 module.exports = mongoose.model('Product', productSchema);

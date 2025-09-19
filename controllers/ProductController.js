@@ -33,6 +33,26 @@ const updateProduct = async (req, res) => {
     }
 };
 
+const markAsSold = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const product = await Product.findByIdAndUpdate(id, { saleStatus: 'sold' }, { new: true });
+        res.json(product);
+    } catch (error) {
+        res.status(500).json({ message: 'Error marking product as sold', error });
+    }
+};
+
+const markAsArchived = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const product = await Product.findByIdAndUpdate(id, { saleStatus: 'archived' }, { new: true });
+        res.json(product);
+    } catch (error) {
+        res.status(500).json({ message: 'Error marking product as archived', error });
+    }
+};
+
 const deleteProduct = async (req, res) => {
     try {
         const { id } = req.params;
@@ -44,4 +64,4 @@ const deleteProduct = async (req, res) => {
     }
 };
 
-module.exports = { createProduct, getProducts, updateProduct, deleteProduct };
+module.exports = { createProduct, getProducts, updateProduct, deleteProduct, markAsSold, markAsArchived };

@@ -1,26 +1,23 @@
 const Message = require('../models/Message');
 
 const sendMessage = async (req, res) => {
-  const { sender, receiver, text } = req.body;
+  const { senderId, sender, equipmentId, message, timestamp } = req.body;
   try {
-    const message = await Message.create({ sender, receiver, text });
-    res.status(201).json(message);
+    const newMessage = await Message.create({ senderId, sender, equipmentId, message, timestamp });
+    res.status(201).json(newMessage);
   } catch(e) {
     res.status(500).json({ message: 'Error sending message', e });
   }
 };
 
 const getMessages = async (req, res) => {
-  const { user1, user2 } = req.query;
+  const { equipmentId } = req.query;
   try {
     const messages = await Message.find({
-      $or: [
-        { sender: user1, receiver: user2 },
-        { sender: user2, receiver: user1 }
-      ]
+      equipmentId
     }).sort({ createdAt: 1 });
     res.json(messages);
-  } catch(e) {
+  } catch (e) {
     res.status(500).json({ message: 'Error fetching messages', e });
   }
 };
