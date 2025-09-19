@@ -6,15 +6,17 @@ const connectDB = require('./config/db');
 const productRoutes = require('./routes/productRoutes');
 const authRoutes = require('./routes/authRoutes');
 const chatRoutes = require('./routes/chatRoutes');
+const cors = require('cors');
+const { isAuthenticated } = require('./middleware/authMiddleware');
 
 const app = express();                  
 
-
+app.use(cors()); // Enable CORS
 app.use(express.json());
 
-app.use('/api/products', productRoutes);
+app.use('/api/products', isAuthenticated, productRoutes);
 app.use('/api/auth', authRoutes);
-app.use('/api/chats', chatRoutes);
+app.use('/api/chats', isAuthenticated, chatRoutes);
 
 app.get('/', (req, res) => res.send('API is running...'));
 
